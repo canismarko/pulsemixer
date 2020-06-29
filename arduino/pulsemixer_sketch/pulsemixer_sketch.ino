@@ -6,9 +6,9 @@
 
 #define n_channels 3
 #define n_pins 4
-int pins_mute_btn[n_pins] = {10, 11, 12, 13};
-int pins_mute_led[n_pins] = {2, 3, 7, 5};
-int pins_vol_pot[n_pins] = {A5, A4, A1, A2};
+int pins_mute_btn[n_pins] = {12, 10, 11, 13};
+int pins_mute_led[n_pins] = {7, 2, 3, 5};
+int pins_vol_pot[n_pins] = {A1, A5, A4, A2};
 
 #define BTN_DOWN LOW
 #define BTN_UP HIGH
@@ -17,8 +17,9 @@ int pins_vol_pot[n_pins] = {A5, A4, A1, A2};
 #define FALSE 0
 
 // Status variables
-unsigned int channel_is_muted[n_pins] = {0, 0, 1, 0}; // Defaults get flipped during setup()
+unsigned int channel_is_muted[n_pins] = {1, 1, 1, 1}; // Defaults get updated once computer is connected
 int current_vols[n_pins] = {-1, -1, -1, -1}; // -1 means it will always report a new value on boot
+int refresh_requested = FALSE;
 
 
 void setup() {
@@ -30,10 +31,8 @@ void setup() {
     pinMode(pins_mute_led[p], OUTPUT);
     pinMode(pins_vol_pot[p], INPUT);
   }
-  // Toggle mute so it gets sent to the serial connection
-  for (int ch=0; ch<n_channels; ch++) {
-    toggle_mute(ch);
-  }
+  // Get the loop to request a state update from the host
+  refresh_requested = TRUE;
 }
 
 
@@ -58,7 +57,10 @@ void toggle_mute(int channel) {
     channel_is_muted[channel] = TRUE;
   }
   Serial.println(channel_is_muted[channel]);
+  // Refresh the mute LED states
+  set_mute_leds();
 }
+
 
 void check_volume_pots() {
   int new_vol;
@@ -78,7 +80,23 @@ void check_volume_pots() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  set_mute_leds();
+
+  // Check if we need to request new data from the host
+  if (refresh_requested) {
+    Serial.println("REFRESH");
+    refresh_requested = FALSE;
+  }
+
+  // Check for states coming in on the serial connectio
+  if (Serial.available()) {
+    String command = Serial.readStringUntil('\n');
+    if (command.substring(0, 4) == "MUTE") {
+      int channel = command.substring(7, 8).toInt();
+      int new_state = command.substring(9, 10).toInt();
+      channel_is_muted[channel] = new_state;
+    }
+    set_mute_leds();
+  }
 
   // Check if a button was pressed
   for (int p=0; p<n_channels; p++) { 

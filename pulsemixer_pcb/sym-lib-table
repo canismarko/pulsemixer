@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name pulsemixer_pcb)(type Legacy)(uri ${KIPRJMOD}/pulsemixer_pcb.lib)(options "")(descr ""))
+)

@@ -909,7 +909,7 @@
   )
 
   (module Capacitors_THT:CP_Radial_D5.0mm_P2.00mm (layer F.Cu) (tedit 597BC7C2) (tstamp 5EF6D7D2)
-    (at 32.770001 -83.594999)
+    (at -110.229999 -118.994999)
     (descr "CP, Radial series, Radial, pin pitch=2.00mm, , diameter=5mm, Electrolytic Capacitor")
     (tags "CP Radial series Radial pin pitch 2.00mm  diameter 5mm Electrolytic Capacitor")
     (path /5F3A4DCE)
@@ -1204,7 +1204,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D86B)
-    (at 91.595001 -22.159999)
+    (at 25.395001 -66.959999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5F077D67/5EF6220A)
@@ -1240,7 +1240,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D87C)
-    (at 86.045001 -22.159999)
+    (at 19.845001 -66.959999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5F077D67/5EF56688)
@@ -1276,7 +1276,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D88D)
-    (at 117.395001 -25.439999)
+    (at 51.195001 -70.239999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5F077D67/5F0120A4)
@@ -1312,7 +1312,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D89E)
-    (at 80.495001 -22.159999)
+    (at 14.295001 -66.959999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5F077D67/5EFD4AC7)
@@ -1348,7 +1348,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D8AF)
-    (at 14.075001 -25.019999)
+    (at -128.924999 -60.419999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5EF5CDBF/5EF6220A)
@@ -1384,7 +1384,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D8C0)
-    (at 8.525001 -25.019999)
+    (at -134.474999 -60.419999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5EF5CDBF/5EF56688)
@@ -1420,7 +1420,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D8D1)
-    (at 39.875001 -28.299999)
+    (at -103.124999 -63.699999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5EF5CDBF/5F0120A4)
@@ -1456,7 +1456,7 @@
   )
 
   (module Capacitors_SMD:C_0805_HandSoldering (layer F.Cu) (tedit 58AA84A8) (tstamp 5EF6D8E2)
-    (at 2.975001 -25.019999)
+    (at -140.024999 -60.419999)
     (descr "Capacitor SMD 0805, hand soldering")
     (tags "capacitor 0805")
     (path /5EF5CDBF/5EFD4AC7)
@@ -1492,7 +1492,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D8FA)
-    (at 24.985001 -82.234999)
+    (at -118.014999 -117.634999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F041F34)
@@ -1533,7 +1533,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D912)
-    (at 24.985001 -79.284999)
+    (at -118.014999 -114.684999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F04BCE5)
@@ -1574,7 +1574,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D92A)
-    (at 24.985001 -76.334999)
+    (at -118.014999 -111.734999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F071288)
@@ -1615,7 +1615,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D942)
-    (at 40.085001 -92.014999)
+    (at -102.914999 -127.414999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F0712A2)
@@ -1656,7 +1656,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D95A)
-    (at 56.635001 -103.824999)
+    (at -86.364999 -139.224999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F077D34)
@@ -1697,7 +1697,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D972)
-    (at 40.085001 -89.064999)
+    (at -102.914999 -124.464999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F077D4E)
@@ -1738,7 +1738,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D98A)
-    (at 24.985001 -73.384999)
+    (at -118.014999 -108.784999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F077D70)
@@ -1779,7 +1779,7 @@
   )
 
   (module Diodes_SMD:D_SOD-323_HandSoldering (layer F.Cu) (tedit 58641869) (tstamp 5EF6D9A2)
-    (at 47.635001 -95.274999)
+    (at -95.364999 -130.674999)
     (descr SOD-323)
     (tags SOD-323)
     (path /5F077D8A)
@@ -1820,7 +1820,7 @@
   )
 
   (module LEDs:LED_1206_HandSoldering (layer F.Cu) (tedit 595FC724) (tstamp 5EF6D9B7)
-    (at 26.235001 -85.334999)
+    (at -116.764999 -120.734999)
     (descr "LED SMD 1206, hand soldering")
     (tags "LED 1206")
     (path /5F203208)
@@ -1896,7 +1896,7 @@
   )
 
   (module LEDs:LED_1206_HandSoldering (layer F.Cu) (tedit 595FC724) (tstamp 5EF6D9F6)
-    (at 66.395001 -21.934999)
+    (at 0.195001 -66.734999)
     (descr "LED SMD 1206, hand soldering")
     (tags "LED 1206")
     (path /5F077D67/5EF4E46F)
@@ -1934,7 +1934,7 @@
   )
 
   (module LEDs:LED_1206_HandSoldering (layer F.Cu) (tedit 595FC724) (tstamp 5EF6DA0B)
-    (at 55.435001 -62.014999)
+    (at -87.564999 -97.414999)
     (descr "LED SMD 1206, hand soldering")
     (tags "LED 1206")
     (path /5EF5CDBF/5EF4E46F)
@@ -2191,7 +2191,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DAC4)
-    (at 26.235001 -95.114999)
+    (at -116.764999 -130.514999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F0560CA)
@@ -2227,7 +2227,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DAD5)
-    (at 33.785001 -88.594999)
+    (at -109.214999 -123.994999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F055ADD)
@@ -2263,7 +2263,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DAE6)
-    (at 26.235001 -88.594999)
+    (at -116.764999 -123.994999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F131AF4)
@@ -2299,7 +2299,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DAF7)
-    (at 33.785001 -91.854999)
+    (at -109.214999 -127.254999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F12D626)
@@ -2335,7 +2335,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DB08)
-    (at 26.235001 -91.854999)
+    (at -116.764999 -127.254999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F0C2970)
@@ -2371,7 +2371,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DB19)
-    (at 41.335001 -95.114999)
+    (at -101.664999 -130.514999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F2017D9)
@@ -2515,7 +2515,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DB90)
-    (at 107.545001 -22.004999)
+    (at 41.345001 -66.804999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F077D67/5EF5666E)
@@ -2551,7 +2551,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DBA1)
-    (at 73.945001 -21.934999)
+    (at 7.745001 -66.734999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F077D67/5EF4E475)
@@ -2587,7 +2587,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DBB2)
-    (at 132.955001 -59.154999)
+    (at 66.755001 -103.954999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F077D67/5EF621F0)
@@ -2623,7 +2623,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DBC3)
-    (at -11.124999 -24.794999)
+    (at -154.124999 -60.194999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5EF5CDBF/5EF5666E)
@@ -2659,7 +2659,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DBD4)
-    (at 30.025001 -24.864999)
+    (at -112.974999 -60.264999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5EF5CDBF/5EF4E475)
@@ -2695,7 +2695,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DBE5)
-    (at -3.574999 -24.794999)
+    (at -146.574999 -60.194999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5EF5CDBF/5EF621F0)
@@ -2731,7 +2731,7 @@
   )
 
   (module Resistors_SMD:R_1206_HandSoldering (layer F.Cu) (tedit 58E0A804) (tstamp 5EF6DBF6)
-    (at 33.785001 -95.114999)
+    (at -109.214999 -130.514999)
     (descr "Resistor SMD 1206, hand soldering")
     (tags "resistor 1206")
     (path /5F0A72F9)
@@ -2767,7 +2767,7 @@
   )
 
   (module Buttons_Switches_THT:SW_PUSH_6mm (layer F.Cu) (tedit 5923F252) (tstamp 5EF6DC15)
-    (at 45.585001 -103.274999)
+    (at -97.414999 -138.674999)
     (descr https://www.omron.com/ecb/products/pdf/en-b3f.pdf)
     (tags "tact sw push 6mm")
     (path /5F0FEA67)
@@ -2818,7 +2818,7 @@
   )
 
   (module Buttons_Switches_THT:SW_PUSH_6mm (layer F.Cu) (tedit 5923F252) (tstamp 5EF6DC34)
-    (at 35.035001 -103.274999)
+    (at -107.964999 -138.674999)
     (descr https://www.omron.com/ecb/products/pdf/en-b3f.pdf)
     (tags "tact sw push 6mm")
     (path /5F0FEEA0)
@@ -2869,7 +2869,7 @@
   )
 
   (module Buttons_Switches_THT:SW_PUSH_6mm (layer F.Cu) (tedit 5923F252) (tstamp 5EF6DC53)
-    (at 24.485001 -103.274999)
+    (at -118.514999 -138.674999)
     (descr https://www.omron.com/ecb/products/pdf/en-b3f.pdf)
     (tags "tact sw push 6mm")
     (path /5F0C25B5)
@@ -3027,7 +3027,7 @@
   )
 
   (module pulsemixer_pcb:EN12-HS22AF18 (layer F.Cu) (tedit 5EF6DCB0) (tstamp 5EF6DD00)
-    (at 121.901801 -36.147299)
+    (at 55.701801 -80.947299)
     (path /5F077D67/5EF51C1B)
     (fp_text reference SW401 (at 0 -5.08) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
@@ -3086,7 +3086,7 @@
   )
 
   (module Buttons_Switches_THT:SW_PUSH_6mm (layer F.Cu) (tedit 5923F252) (tstamp 5EF6DD1F)
-    (at 116.645001 -33.374999)
+    (at 50.445001 -78.174999)
     (descr https://www.omron.com/ecb/products/pdf/en-b3f.pdf)
     (tags "tact sw push 6mm")
     (path /5F077D67/5EF621F7)
@@ -3137,7 +3137,7 @@
   )
 
   (module pulsemixer_pcb:EN12-HS22AF18 (layer F.Cu) (tedit 5EF6DCB0) (tstamp 5EF9B622)
-    (at 44.381801 -39.007299)
+    (at -98.618199 -74.407299)
     (path /5EF5CDBF/5EF51C1B)
     (fp_text reference SW501 (at 0 -5.08) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
@@ -3196,7 +3196,7 @@
   )
 
   (module Buttons_Switches_THT:SW_PUSH_6mm (layer F.Cu) (tedit 5923F252) (tstamp 5EF6DD63)
-    (at 39.125001 -36.234999)
+    (at -103.874999 -71.634999)
     (descr https://www.omron.com/ecb/products/pdf/en-b3f.pdf)
     (tags "tact sw push 6mm")
     (path /5EF5CDBF/5EF621F7)
@@ -3335,7 +3335,7 @@
   )
 
   (module Housings_DIP:DIP-28_W7.62mm (layer F.Cu) (tedit 59C78D6B) (tstamp 5EF6DDF3)
-    (at 105.395001 -58.714999)
+    (at 39.195001 -103.514999)
     (descr "28-lead though-hole mounted DIP package, row spacing 7.62 mm (300 mils)")
     (tags "THT DIP DIL PDIP 2.54mm 7.62mm 300mil")
     (path /5F077D67/5EF6BF19)
@@ -3423,7 +3423,7 @@
   )
 
   (module Housings_DIP:DIP-28_W7.62mm (layer F.Cu) (tedit 59C78D6B) (tstamp 5EF6DE23)
-    (at 27.875001 -61.574999)
+    (at -115.124999 -96.974999)
     (descr "28-lead though-hole mounted DIP package, row spacing 7.62 mm (300 mils)")
     (tags "THT DIP DIL PDIP 2.54mm 7.62mm 300mil")
     (path /5EF5CDBF/5EF6BF19)
