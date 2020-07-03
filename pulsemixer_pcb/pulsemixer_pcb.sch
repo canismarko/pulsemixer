@@ -187,7 +187,7 @@ Wire Wire Line
 $Sheet
 S 1550 2400 1150 950 
 U 5F07127F
-F0 "sheet5F071274" 50
+F0 "Channel1" 50
 F1 "pulsemixer_channel.sch" 50
 F2 "SCK" I R 2700 3050 50 
 F3 "SDA" I R 2700 2950 50 
@@ -286,7 +286,7 @@ Wire Wire Line
 $Sheet
 S 1550 3600 1150 950 
 U 5F077D2B
-F0 "sheet5F077D1F" 50
+F0 "Channel2" 50
 F1 "pulsemixer_channel.sch" 50
 F2 "SCK" I R 2700 4250 50 
 F3 "SDA" I R 2700 4150 50 
@@ -381,7 +381,7 @@ Wire Wire Line
 $Sheet
 S 1550 4800 1150 950 
 U 5F077D67
-F0 "sheet5F077D20" 50
+F0 "Channel3" 50
 F1 "pulsemixer_channel.sch" 50
 F2 "SCK" I R 2700 5450 50 
 F3 "SDA" I R 2700 5350 50 
@@ -721,7 +721,7 @@ $EndComp
 $Sheet
 S 1550 1200 1150 950 
 U 5EF5CDBF
-F0 "Channel1" 50
+F0 "Channel0" 50
 F1 "pulsemixer_channel.sch" 50
 F2 "SCK" I R 2700 1850 50 
 F3 "SDA" I R 2700 1750 50 
