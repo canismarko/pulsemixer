@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name pulsemixer_pcb)(type KiCad)(uri ${KIPRJMOD}/pulsemixer_pcb.pretty)(options "")(descr ""))
+  (lib (name 3352T-12-103LF)(type KiCad)(uri /home/mwolf/temp/3352T-12-103LF.pretty)(options "")(descr ""))
 )

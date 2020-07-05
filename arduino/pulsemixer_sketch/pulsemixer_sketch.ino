@@ -1,114 +1,214 @@
-// Pin assignments
-#define PIN_VOL_POT_CH0 A0
-#define PIN_VOL_POT_CH1 A1
-#define PIN_VOL_POT_CH2 A2
-#define PIN_VOL_POT_CH3 A3
+#include <Wire.h>
+#include "channel.h"
 
-#define n_channels 3
-#define n_pins 4
-int pins_mute_btn[n_pins] = {12, 10, 11, 13};
-int pins_mute_led[n_pins] = {7, 2, 3, 5};
-int pins_vol_pot[n_pins] = {A1, A5, A4, A2};
+// Arduino pins
+#define PIN_INT_BTN 2
+#define PIN_INT_ROT 3
 
-#define BTN_DOWN LOW
-#define BTN_UP HIGH
+// i2c address for GPIO port expanders
+#define GPIO_CH0 0x20
+#define GPIO_CH1 0x21
+#define GPIO_CH2 0x22
+#define GPIO_CH3 0x23
 
-#define TRUE 1
-#define FALSE 0
+#define TICK 300
 
-// Status variables
-unsigned int channel_is_muted[n_pins] = {1, 1, 1, 1}; // Defaults get updated once computer is connected
-int current_vols[n_pins] = {-1, -1, -1, -1}; // -1 means it will always report a new value on boot
-int refresh_requested = FALSE;
+// MCP23017 control registers
+#define IODIRA   0x00
+#define IODIRB   0x01
+#define IPOLA    0x02
+#define IPOLB    0x03
+#define GPINTENA 0x04
+#define GPINTENB 0x05
+#define DEFVALA  0x06
+#define DEFVALB  0x07
+#define INTCONA  0x08
+#define INTCONB  0x09
+#define INTCAPA  0x10
+#define INTCAPB  0x11
+#define INTFA    0x0E
+#define INTFB    0x0F 
+#define GPIOA    0x12
+#define GPIOB    0x13
 
+// Masks for GPIO pin assignments
+#define BTN_MUTE B00000001
+#define BTN_VOL  B00000010
+#define ROT_VOLB B00100000
+#define ROT_VOLA B01000000
+#define ROT_VOLS (ROT_VOLA | ROT_VOLB)
+
+// Variables for tracking rotary encoder
+byte volOldPins[] = {0, 0, 0, 0}; // will hold state of pins last time encoder was read
+const byte RotaryDecodeTable[4][4] = {  // Declare array RotaryDecodeTable
+{B00, B10, B01, B11},
+{B01, B00, B11, B10},
+{B10, B11, B00, B01},
+{B11, B01, B10, B00}
+};
+int rotationCounters[] = {0, 0, 0, 0};
+
+// State variables
+bool muteButtonsPressed[] = {0, 0, 0, 0};
+byte inputALast = 0;
+
+
+byte readGPIO(byte addr, byte reg, bool is_interrupt=false);
+
+
+void writeMCP(byte addr, byte reg, byte data) {
+  Wire.beginTransmission(addr);
+  Wire.write(reg);
+  Wire.write(data);
+  Wire.endTransmission();
+}
+
+byte readGPIO(byte addr, byte reg, bool is_interrupt=false) {
+  if (is_interrupt) {
+    // Fix the interrupt problem with i2c
+    // https://www.best-microcontroller-projects.com/mcp23017.html
+    noInterrupts();
+  
+    // Debounce. Slow I2C: extra debounce between interrupts anyway.
+    // Can not use delay() in interrupt code.
+    delayMicroseconds(1000);
+   
+    // Stop interrupts from external pin.
+    // detachInterrupt(digitalPinToInterrupt(PIN_INT_BTN));
+    detachInterrupts();
+      interrupts(); // re-start interrupts for mcp
+  }
+
+  Wire.beginTransmission(addr);
+  Wire.write(reg);
+  Wire.endTransmission();
+  Wire.requestFrom(addr, (byte) 1);
+  byte response = Wire.read();
+
+  if (is_interrupt) {
+  
+    attachInterrupts();  // Reinstate interrupts from external pin.
+  }
+  
+  return response;
+}
+
+void setupI2C() {
+    // Set up the i2c interface
+  Wire.begin();
+
+  // Set pins to read/write
+  writeMCP(GPIO_CH0, IODIRA, B11110000);
+  writeMCP(GPIO_CH0, IODIRB, B00000011);
+
+  // Set up hardware interrupts
+  writeMCP(GPIO_CH0, GPINTENA, B11100000);
+  writeMCP(GPIO_CH0, GPINTENB, B00000011);
+  writeMCP(GPIO_CH0, INTCONA, 0x00);
+  writeMCP(GPIO_CH0, INTCONB, B00000000);
+  // writeMCP(GPIO_CH0, DEFVALB, B00000011);
+
+  // Make buttons report 1 when pressed
+  writeMCP(GPIO_CH0, IPOLB, B00000011);
+
+}
+
+void turnOnLED() {
+  Wire.beginTransmission(GPIO_CH0);
+  Wire.write(GPIOA);
+  Wire.write(0xFF);
+  Wire.endTransmission();
+}
+
+void turnOffLED() {
+  Wire.beginTransmission(GPIO_CH0);
+  Wire.write(GPIOA);
+  Wire.write(0x00);
+  Wire.endTransmission();
+}
+
+
+void readVolumeEncoder() {
+  Wire.beginTransmission(GPIO_CH0);
+  Wire.write(GPIOA);
+  Wire.endTransmission();
+  Wire.requestFrom(GPIO_CH0, 1);
+  byte inputs = Wire.read();
+  // Extract just the volume A/B bits
+  bool volA = (inputs & B01000000);
+  bool volB = inputs & B00100000;
+  if (inputs != inputALast) {
+    inputALast = inputs;
+    Serial.println("Input changed!");
+    Serial.print("Inputs: ");
+    Serial.println(inputs, BIN);
+    Serial.print("Vol A: ");
+    Serial.println(volA);
+    Serial.print("Vol B: ");
+    Serial.println(volB);
+  }
+  
+  
+}
+
+
+void attachInterrupts() {
+  attachInterrupt(digitalPinToInterrupt(PIN_INT_ROT), isr_volume, LOW);
+  attachInterrupt(digitalPinToInterrupt(PIN_INT_BTN), isr_button, LOW);
+}
+
+void detachInterrupts() {
+  detachInterrupt(digitalPinToInterrupt(PIN_INT_ROT));
+  detachInterrupt(digitalPinToInterrupt(PIN_INT_BTN));
+}
+
+void isr_volume() {
+  int channel = 0;
+  // Load current state of the volume knobs
+  byte gpio_states = readGPIO(GPIO_CH0, INTCAPA, true);
+  byte new_vols = ((gpio_states & ROT_VOLS) >>5);
+  // Determine if the volume knob has moved
+  byte vol_move = RotaryDecodeTable[volOldPins[channel]][new_vols]; // used RotaryDecodeTable to decide movement, if any
+  volOldPins[channel] = new_vols; // update encoder1state to be current pin values
+  if (vol_move == B10){ // if result was move right (CW), increment counter
+    rotationCounters[channel]++;
+  }
+  if (vol_move == B01){ // if result was move left (anti-CW), decrement counter
+    rotationCounters[channel]--;
+  }
+  Serial.println(rotationCounters[channel]);
+}
+
+void isr_button() {
+
+  // Load current state of which buttons were pressed
+  byte states = readGPIO(GPIO_CH0, INTCAPB, true);
+  bool mute_button_down = (bool) (states & BTN_MUTE);
+  muteButtonsPressed[0] = muteButtonsPressed[0] || mute_button_down;
+  Serial.println(muteButtonsPressed[0]); 
+  
+}
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  // Set read/write mode on each pin
-  for (int p=0; p<n_pins; p++) {
-    pinMode(pins_mute_btn[p], INPUT);
-    pinMode(pins_mute_led[p], OUTPUT);
-    pinMode(pins_vol_pot[p], INPUT);
-  }
-  // Get the loop to request a state update from the host
-  refresh_requested = TRUE;
-}
 
+  setupI2C();
 
-void set_mute_leds() {
-  for (int ch=0; ch<n_channels; ch++) {
-    if (channel_is_muted[ch]) {
-      digitalWrite(pins_mute_led[ch], HIGH);
-    } else {
-      digitalWrite(pins_mute_led[ch], LOW);
-    }
-  }
-}
+  // Attach hardware interrupts to service routines
+  pinMode(PIN_INT_ROT, INPUT);
+  pinMode(PIN_INT_BTN, INPUT);
+  attachInterrupts();
 
-
-void toggle_mute(int channel) {
-  Serial.print("MUTE CH");
-  Serial.print(channel);
-  Serial.print(" ");
-  if (channel_is_muted[channel]) {
-    channel_is_muted[channel] = FALSE;
-  } else {
-    channel_is_muted[channel] = TRUE;
-  }
-  Serial.println(channel_is_muted[channel]);
-  // Refresh the mute LED states
-  set_mute_leds();
-}
-
-
-void check_volume_pots() {
-  int new_vol;
-  for (int ch=0; ch<n_channels; ch++) {
-    new_vol = analogRead(pins_vol_pot[ch]) / 1023.0 * 100;
-    new_vol = new_vol / 5 * 5; // Round to the nearest 3
-    if (new_vol != current_vols[ch]) {
-      current_vols[ch] = new_vol;
-      Serial.print("VOLUME CH");
-      Serial.print(ch);
-      Serial.print(" ");
-      Serial.println(current_vols[ch]);
-    }
-  }
+  // Clear interrupt registers
+  readGPIO(GPIO_CH0, INTCAPA);
+  readGPIO(GPIO_CH0, INTCAPB);
 }
 
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-  // Check if we need to request new data from the host
-  if (refresh_requested) {
-    Serial.println("REFRESH");
-    refresh_requested = FALSE;
-  }
-
-  // Check for states coming in on the serial connectio
-  if (Serial.available()) {
-    String command = Serial.readStringUntil('\n');
-    if (command.substring(0, 4) == "MUTE") {
-      int channel = command.substring(7, 8).toInt();
-      int new_state = command.substring(9, 10).toInt();
-      channel_is_muted[channel] = new_state;
-    }
-    set_mute_leds();
-  }
-
-  // Check if a button was pressed
-  for (int p=0; p<n_channels; p++) { 
-    if (digitalRead(pins_mute_btn[p]) == BTN_DOWN) {
-      toggle_mute(p);
-      set_mute_leds();
-      // Block until the switch is released
-      while (digitalRead(pins_mute_btn[p]) == BTN_DOWN) {
-      }
-    }
-  }
   
-  // Check if the volume pot has changed
-  check_volume_pots();
+  // Sleep for a second
+  delay(TICK);
 }

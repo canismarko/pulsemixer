@@ -1,3 +1,43 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP 7400
+D quad 2-input NAND gate
+K TTL nand 2-input
+F http://www.ti.com/lit/gpn/sn7400
+$ENDCMP
+#
+$CMP 74HC00
+D quad 2-input NAND gate
+K HCMOS nand 2-input
+F http://www.ti.com/lit/gpn/sn74hc00
+$ENDCMP
+#
+$CMP 74HCT00
+D quad 2-input NAND gate
+K HCTMOS nand 2-input
+F http://www.ti.com/lit/gpn/sn74hct00
+$ENDCMP
+#
+$CMP 74LS37
+D quad 2-input NAND buffer
+K TTL nand 2-input buffer
+F http://www.ti.com/lit/gpn/sn74ls37
+$ENDCMP
+#
+$CMP BAT54DW-7-F
+D 2-ch schottky diode
+$ENDCMP
+#
+$CMP SN74HC21DR
+D dual 4-input AND gate
+K CMOS Nand4
+F http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf
+$ENDCMP
+#
+$CMP SN74LHC08DR
+D quad 2-input AND gate
+K TTL nand 2-input
+F http://www.ti.com/lit/gpn/sn74ls00
+$ENDCMP
+#
 #End Doc Library
