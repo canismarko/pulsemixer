@@ -1,5 +1,15 @@
-#include <Wire.h>
+ #include <Wire.h>
 #include "channel.h"
+#include "lcd.h"
+
+// Define channels and their i2c addresses
+#define N_CHANNELS 1
+Channel channels[N_CHANNELS];
+gpio_bank channelAddrs[] = {0x20, 0x21, 0x22, 0x23};
+// channels[0].setAddr(0x20);
+// channels[1].setAddr(0x20);
+// channels[2].setAddr(0x20);
+// channels[3].setAddr(0x20);
 
 // Arduino pins
 #define PIN_INT_BTN 2
@@ -56,12 +66,7 @@ byte inputALast = 0;
 byte readGPIO(byte addr, byte reg, bool is_interrupt=false);
 
 
-void writeMCP(byte addr, byte reg, byte data) {
-  Wire.beginTransmission(addr);
-  Wire.write(reg);
-  Wire.write(data);
-  Wire.endTransmission();
-}
+
 
 byte readGPIO(byte addr, byte reg, bool is_interrupt=false) {
   if (is_interrupt) {
@@ -93,25 +98,6 @@ byte readGPIO(byte addr, byte reg, bool is_interrupt=false) {
   return response;
 }
 
-void setupI2C() {
-    // Set up the i2c interface
-  Wire.begin();
-
-  // Set pins to read/write
-  writeMCP(GPIO_CH0, IODIRA, B11110000);
-  writeMCP(GPIO_CH0, IODIRB, B00000011);
-
-  // Set up hardware interrupts
-  writeMCP(GPIO_CH0, GPINTENA, B11100000);
-  writeMCP(GPIO_CH0, GPINTENB, B00000011);
-  writeMCP(GPIO_CH0, INTCONA, 0x00);
-  writeMCP(GPIO_CH0, INTCONB, B00000000);
-  // writeMCP(GPIO_CH0, DEFVALB, B00000011);
-
-  // Make buttons report 1 when pressed
-  writeMCP(GPIO_CH0, IPOLB, B00000011);
-
-}
 
 void turnOnLED() {
   Wire.beginTransmission(GPIO_CH0);
@@ -193,22 +179,40 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
 
-  setupI2C();
+  // Set up the i2c interface
+  Wire.begin();
+  
+  // Initialize each channel
+  for (int ch=0; ch<N_CHANNELS; ch++) {
+    channels[ch].setupI2C(channelAddrs[ch]);
+  }
 
   // Attach hardware interrupts to service routines
-  pinMode(PIN_INT_ROT, INPUT);
-  pinMode(PIN_INT_BTN, INPUT);
-  attachInterrupts();
+  // pinMode(PIN_INT_ROT, INPUT);
+  // pinMode(PIN_INT_BTN, INPUT);
+  // attachInterrupts();
 
-  // Clear interrupt registers
-  readGPIO(GPIO_CH0, INTCAPA);
-  readGPIO(GPIO_CH0, INTCAPB);
+  // Clear any interrupts from initialization
+  for (int ch=0; ch<N_CHANNELS; ch++) {
+    channels[ch].readInterruptState();
+  }
+
+  // Display a welcome message
+  channels[0]._lcd.write("Hi, Adam!");
+
 }
 
 
 void loop() {
   // put your main code here, to run repeatedly:
-  
+  // channels[0].toggleMute();
+  // channels[0].writeGPIO(combineBanks(B00000000, B00000001));
+  // delay(TICK);
+  // channels[0].writeGPIO(combineBanks(B00000000, B00000000));
+
+  // Write a test message to the LCD
+  // channels[0]._lcd.write("Hello, world");
+
   // Sleep for a second
   delay(TICK);
 }
