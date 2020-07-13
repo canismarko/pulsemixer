@@ -1,6 +1,5 @@
  #include <Wire.h>
 #include "channel.h"
-#include "lcd.h"
 
 // Define channels and their i2c addresses
 #define N_CHANNELS 1

@@ -3,10 +3,15 @@
 
 
 #define LCD_ALL    0xFFFF // B11111111 11111111
-#define LCD_DB     0xFF00 // B11111111 00000000
-#define LCD_ENABLE 0x0020 // B00000000 00100000
-#define LCD_RS     0x0010 // B00000000 00010000
-#define LCD_RW     0x0008 // B00000000 00001000
+// #define LCD_DB     0xFF00 // B11110000 00000000
+// #define LCD_ENABLE 0x0020 // B00000000 00001000
+// #define LCD_RS     0x0010 // B00000000 00000100
+// #define LCD_RW     0x0008 // B00000000 00000010
+#define LCD_DB     0x0FF0 // B00001111 11110000
+#define LCD_ENABLE 0x0008 // B00000000 00001000
+#define LCD_RS     0x0004 // B00000000 00000100
+#define LCD_RW     0x0002 // B00000000 00000010
+
 
 
 void LCD::setupI2C(gpio_bank addr)
@@ -31,7 +36,7 @@ void LCD::_send_command(gpio_bank command)
 {
   gpio_full gpioPins = this->_gpio.readPins();
   //put data on output Port (P1 = i)
-  gpioPins = setBits(gpioPins, command <<8, LCD_DB);
+  gpioPins = setBits(gpioPins, command << 4, LCD_DB);
   // D/I=LOW : send instruction (D_I =0)
   gpioPins = setBits(gpioPins, 0x0000, LCD_RS);
   // R/W=LOW : Write (R_W =0)
@@ -46,7 +51,7 @@ void LCD::_send_data(gpio_bank data)
 {
   gpio_full gpioPins = 0x0000;
   // Put data on output Port (P1 = i)
-  gpioPins = setBits(gpioPins, data << 8, LCD_DB);
+  gpioPins = setBits(gpioPins, data << 4, LCD_DB);
   // D/I=HIGH : send data (D_I =1)
   gpioPins = setBits(gpioPins, 0xFFFF, LCD_RS);
   // R/W=LOW : Write (R_W =0)
