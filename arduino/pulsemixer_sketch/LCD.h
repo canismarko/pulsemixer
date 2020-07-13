@@ -14,13 +14,15 @@ class LCD
  public:
   void setupI2C(gpio_bank newAddr);
   void write(String message);
+  void setLED(bool setOn);
  private:
   gpio_bank _addr;
   GPIOChip _gpio;
   void _init();
   void _send_data(gpio_bank i);
-  void _send_command(gpio_bank i);
+  void _send_command(gpio_bank i, bool is4bit=true);
   void _trigger();
+  
 };
 
 #endif

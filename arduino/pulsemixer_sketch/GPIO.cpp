@@ -38,6 +38,7 @@ void printBinary(gpio_full input) {
 
 
 void waitForButton() {
+  return;
   Serial.print("Waiting for button...");
   int state = 1;
   while (state) {

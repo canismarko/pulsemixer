@@ -20,7 +20,7 @@ gpio_bank channelAddrs[] = {0x20, 0x21, 0x22, 0x23};
 #define GPIO_CH2 0x22
 #define GPIO_CH3 0x23
 
-#define TICK 300
+#define TICK 1000
 
 // MCP23017 control registers
 #define IODIRA   0x00
@@ -60,6 +60,7 @@ int rotationCounters[] = {0, 0, 0, 0};
 // State variables
 bool muteButtonsPressed[] = {0, 0, 0, 0};
 byte inputALast = 0;
+bool ledIsOn = false;
 
 
 byte readGPIO(byte addr, byte reg, bool is_interrupt=false);
@@ -197,7 +198,7 @@ void setup() {
   }
 
   // Display a welcome message
-  channels[0]._lcd.write("Hi, Adam!");
+  channels[0]._lcd.write("Hi, Clara!");
 
 }
 
@@ -211,6 +212,10 @@ void loop() {
 
   // Write a test message to the LCD
   // channels[0]._lcd.write("Hello, world");
+
+  // Toggle the LCD LED
+  channels[0]._lcd.setLED(ledIsOn);
+  ledIsOn = !ledIsOn;
 
   // Sleep for a second
   delay(TICK);
