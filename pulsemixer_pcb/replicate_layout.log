@@ -1,4 +1,87 @@
-06-29 15:47:42 replicate_layout.action_replicate_layout 305:Plugin executed on: 'linux'
-06-29 15:47:42 replicate_layout.action_replicate_layout 306:Plugin executed with python version: '3.7.7 (default, May  9 2020, 12:14:31) \n[GCC 9.3.0]'
-06-29 15:47:42 replicate_layout.action_replicate_layout 307:KiCad build version: 5.1.6
-06-29 15:47:42 replicate_layout.action_replicate_layout 308:Replicate layout plugin version: 66 started
+07-24 23:24:34 replicate_layout.action_replicate_layout 305:Plugin executed on: 'linux'
+07-24 23:24:34 replicate_layout.action_replicate_layout 306:Plugin executed with python version: '3.7.8 (default, Jul 23 2020, 13:05:30) \n[GCC 9.3.0]'
+07-24 23:24:34 replicate_layout.action_replicate_layout 307:KiCad build version: 5.1.6
+07-24 23:24:34 replicate_layout.action_replicate_layout 308:Replicate layout plugin version: 66 started
+07-24 23:24:34 replicate_layout.action_replicate_layout 340:Preparing replicator with DS201 as a reference
+07-24 23:24:34 replicate_layout.replicatelayout 212:getting project hierarchy from schematics
+07-24 23:24:34 replicate_layout.replicatelayout 214:Project hierarchy looks like:
+{'5F077D2B': ['Channel1', '/home/mwolf/src/pulsemixer/pulsemixer_pcb/pulsemixer_channel.sch'], '5F077D67': ['Channel2', '/home/mwolf/src/pulsemixer/pulsemixer_pcb/pulsemixer_channel.sch'], '5EF5CDBF': ['Channel3', '/home/mwolf/src/pulsemixer/pulsemixer_pcb/pulsemixer_channel.sch'], '5F07127F': ['Channel0', '/home/mwolf/src/pulsemixer/pulsemixer_pcb/pulsemixer_channel.sch']}
+07-24 23:24:34 replicate_layout.replicatelayout 222:getting a list of all footprints on board
+07-24 23:24:34 replicate_layout.action_replicate_layout 367:source anchor footprint is 'DS201'
+Located on:['Channel0']
+With filenames:['pulsemixer_channel.sch']
+With sheet_id:['Channel0']
+07-24 23:24:34 replicate_layout.action_replicate_layout 371:Corresponding footprints are 
+[('DS201', ['Channel0']), ('DS401', ['Channel2']), ('DS501', ['Channel3']), ('DS301', ['Channel1'])]
+07-24 23:24:34 replicate_layout.action_replicate_layout 384:Showing dialog
+07-24 23:24:34 replicate_layout.action_replicate_layout 388:Pcbnew position: wx.Point(15, 33)
+07-24 23:24:34 replicate_layout.action_replicate_layout 394:Display 0: wx.Rect(0, 0, 1920, 1080)
+07-24 23:24:34 replicate_layout.action_replicate_layout 394:Display 1: wx.Rect(1920, 0, 1920, 1080)
+07-24 23:24:34 replicate_layout.action_replicate_layout 398:Toolbar position: wx.Point(1687, 133)
+07-24 23:24:34 replicate_layout.action_replicate_layout 405:Dialog position: wx.Point(1374, 133)
+07-24 23:24:34 replicate_layout.replicatelayout 246:construcing a list of sheets suitable for replication on level:'Channel0', file:'pulsemixer_channel.sch'
+07-24 23:24:34 replicate_layout.replicatelayout 253:Source sheet path up to the level:['Channel0']
+07-24 23:24:34 replicate_layout.replicatelayout 257:Footprints on the sheets:
+['DS201', 'DS401', 'DS501', 'DS301']
+07-24 23:24:34 replicate_layout.replicatelayout 260:Footprints raw sheet ids:
+['/5F07127F/5EF6B5FF', '/5F077D67/5EF6B5FF', '/5EF5CDBF/5EF6B5FF', '/5F077D2B/5EF6B5FF']
+07-24 23:24:34 replicate_layout.replicatelayout 276:All sheets to replicate:
+[['Channel0'], ['Channel2'], ['Channel3'], ['Channel1']]
+07-24 23:24:34 replicate_layout.replicatelayout 281:All sheets to replicate sorted:
+[['Channel0'], ['Channel1'], ['Channel2'], ['Channel3']]
+07-24 23:24:34 replicate_layout.replicatelayout 287:All sheets to replicate sorted and without source sheet:
+[['Channel1'], ['Channel2'], ['Channel3']]
+07-24 23:24:44 replicate_layout.replicatelayout 246:construcing a list of sheets suitable for replication on level:'Channel0', file:'pulsemixer_channel.sch'
+07-24 23:24:44 replicate_layout.replicatelayout 253:Source sheet path up to the level:['Channel0']
+07-24 23:24:44 replicate_layout.replicatelayout 257:Footprints on the sheets:
+['DS201', 'DS401', 'DS501', 'DS301']
+07-24 23:24:44 replicate_layout.replicatelayout 260:Footprints raw sheet ids:
+['/5F07127F/5EF6B5FF', '/5F077D67/5EF6B5FF', '/5EF5CDBF/5EF6B5FF', '/5F077D2B/5EF6B5FF']
+07-24 23:24:44 replicate_layout.replicatelayout 276:All sheets to replicate:
+[['Channel0'], ['Channel2'], ['Channel3'], ['Channel1']]
+07-24 23:24:44 replicate_layout.replicatelayout 281:All sheets to replicate sorted:
+[['Channel0'], ['Channel1'], ['Channel2'], ['Channel3']]
+07-24 23:24:44 replicate_layout.replicatelayout 287:All sheets to replicate sorted and without source sheet:
+[['Channel1'], ['Channel2'], ['Channel3']]
+07-24 23:24:44 replicate_layout.action_replicate_layout 179:Replicating layout
+07-24 23:24:44 replicate_layout.replicatelayout 987:Starting replication of sheets: [['Channel1'], ['Channel2'], ['Channel3']]
+on level: ['Channel0']
+with tracks=True, zone=False, text=False, containing=True, remove=False, locked=False
+07-24 23:24:44 root 261:updating GUI message: 'Preparing for replication'
+07-24 23:24:44 replicate_layout.replicatelayout 553:Getting the list of source footprints
+07-24 23:24:44 root 266:updating GUI with: 0
+07-24 23:24:44 replicate_layout.replicatelayout 557:Getting the list of all the remaining footprints
+07-24 23:24:44 replicate_layout.replicatelayout 561:Getting nets local to source footprints
+07-24 23:24:44 replicate_layout.replicatelayout 565:Getting source bounding box
+07-24 23:24:44 root 266:updating GUI with: 37
+07-24 23:24:44 replicate_layout.replicatelayout 569:Getting source tracks
+07-24 23:24:44 replicate_layout.replicatelayout 573:Getting source zones
+07-24 23:24:44 root 266:updating GUI with: 62
+07-24 23:24:44 replicate_layout.replicatelayout 577:Getting source text items
+07-24 23:24:44 replicate_layout.replicatelayout 581:Getting source text items
+07-24 23:24:44 root 261:updating GUI message: 'Replicating footprints'
+07-24 23:24:44 replicate_layout.replicatelayout 587:Replicating footprints
+07-24 23:24:44 replicate_layout.replicatelayout 593:Replicating footprints on sheet ['Channel1']
+07-24 23:24:44 root 266:updating GUI with: 4
+07-24 23:24:44 root 266:updating GUI with: 17
+07-24 23:24:44 root 266:updating GUI with: 28
+07-24 23:24:44 replicate_layout.replicatelayout 593:Replicating footprints on sheet ['Channel2']
+07-24 23:24:44 root 266:updating GUI with: 39
+07-24 23:24:44 root 266:updating GUI with: 52
+07-24 23:24:44 root 266:updating GUI with: 66
+07-24 23:24:44 replicate_layout.replicatelayout 593:Replicating footprints on sheet ['Channel3']
+07-24 23:24:44 root 266:updating GUI with: 77
+07-24 23:24:44 root 266:updating GUI with: 88
+07-24 23:24:44 root 261:updating GUI message: 'Replicating tracks'
+07-24 23:24:44 replicate_layout.replicatelayout 713:Replicating tracks
+07-24 23:24:44 root 266:updating GUI with: 0
+07-24 23:24:44 replicate_layout.replicatelayout 719:Replicating tracks on sheet ['Channel1']
+07-24 23:24:44 root 266:updating GUI with: 0
+07-24 23:24:44 root 266:updating GUI with: 22
+07-24 23:24:44 replicate_layout.replicatelayout 719:Replicating tracks on sheet ['Channel2']
+07-24 23:24:44 root 266:updating GUI with: 33
+07-24 23:24:44 root 266:updating GUI with: 56
+07-24 23:24:44 replicate_layout.replicatelayout 719:Replicating tracks on sheet ['Channel3']
+07-24 23:24:44 root 266:updating GUI with: 66
+07-24 23:24:44 root 266:updating GUI with: 91
+07-24 23:24:45 replicate_layout.action_replicate_layout 201:Replication complete
