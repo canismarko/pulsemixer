@@ -1007,6 +1007,6 @@ F 1 "Q_NPN_BEC" H 7841 4005 50  0000 L CNN
 F 2 "TO_SOT_Packages_SMD:SOT-23" H 7850 4150 50  0001 C CNN
 F 3 "~" H 7650 4050 50  0001 C CNN
 	1    7650 4050
-	1    0    0    -1  
+	1    0    0    1   
 $EndComp
 $EndSCHEMATC

@@ -4,9 +4,9 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 5
-Title ""
-Date "2020-06-26"
-Rev ""
+Title "Pulse Mixer"
+Date "2020-07-27"
+Rev "v1.0"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -355,7 +355,7 @@ F 3 "" H 10800 4350 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Text Label 7050 2050 0    50   ~ 0
-STRM_DEV
+STRM_DEV_BTN
 Text Label 7050 2350 0    50   ~ 0
 STRM_DEV_LED
 $Comp
@@ -700,42 +700,42 @@ Wire Wire Line
 $Comp
 L pulsemixer_pcb:SN74HC21DR U102
 U 1 1 5F1DAD0A
-P 5650 5950
-F 0 "U102" H 5650 6325 50  0000 C CNN
-F 1 "SN74HC21DR" H 5650 6234 50  0000 C CNN
-F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 5650 5950 50  0001 C CNN
-F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 5650 5950 50  0001 C CNN
-	1    5650 5950
+P 5300 5950
+F 0 "U102" H 5300 6325 50  0000 C CNN
+F 1 "SN74HC21DR" H 5300 6234 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 5300 5950 50  0001 C CNN
+F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 5300 5950 50  0001 C CNN
+	1    5300 5950
 	1    0    0    -1  
 $EndComp
 $Comp
 L pulsemixer_pcb:SN74HC21DR U102
 U 2 1 5F1DC053
-P 5650 6600
-F 0 "U102" H 5650 6975 50  0000 C CNN
-F 1 "SN74HC21DR" H 5650 6884 50  0000 C CNN
-F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 5650 6600 50  0001 C CNN
-F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 5650 6600 50  0001 C CNN
-	2    5650 6600
+P 5300 6600
+F 0 "U102" H 5300 6975 50  0000 C CNN
+F 1 "SN74HC21DR" H 5300 6884 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 5300 6600 50  0001 C CNN
+F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 5300 6600 50  0001 C CNN
+	2    5300 6600
 	1    0    0    -1  
 $EndComp
 $Comp
 L pulsemixer_pcb:SN74HC21DR U102
 U 3 1 5F1DDB9F
-P 5650 7250
-F 0 "U102" H 5650 7617 50  0000 C CNN
-F 1 "SN74HC21DR" H 5650 7526 50  0000 C CNN
-F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 5650 7250 50  0001 C CNN
-F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 5650 7250 50  0001 C CNN
-	3    5650 7250
+P 5300 7250
+F 0 "U102" H 5300 7617 50  0000 C CNN
+F 1 "SN74HC21DR" H 5300 7526 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 5300 7250 50  0001 C CNN
+F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 5300 7250 50  0001 C CNN
+	3    5300 7250
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C C102
 U 1 1 5F1DF7E5
 P 2400 7600
-F 0 "C102" V 2652 7600 50  0000 C CNN
-F 1 "0.1µ" V 2561 7600 50  0000 C CNN
+F 0 "C102" V 2450 7750 50  0000 C CNN
+F 1 "0.1µ" V 2450 7450 50  0000 C CNN
 F 2 "Capacitors_SMD:C_0805_HandSoldering" H 2438 7450 50  0001 C CNN
 F 3 "~" H 2400 7600 50  0001 C CNN
 	1    2400 7600
@@ -758,94 +758,92 @@ Wire Wire Line
 $Comp
 L power:+5V #PWR0136
 U 1 1 5F206ED3
-P 4950 7250
-F 0 "#PWR0136" H 4950 7100 50  0001 C CNN
-F 1 "+5V" V 4965 7378 50  0000 L CNN
-F 2 "" H 4950 7250 50  0001 C CNN
-F 3 "" H 4950 7250 50  0001 C CNN
-	1    4950 7250
+P 4600 7250
+F 0 "#PWR0136" H 4600 7100 50  0001 C CNN
+F 1 "+5V" V 4615 7378 50  0000 L CNN
+F 2 "" H 4600 7250 50  0001 C CNN
+F 3 "" H 4600 7250 50  0001 C CNN
+	1    4600 7250
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	4950 7250 5050 7250
+	4600 7250 4700 7250
 $Comp
 L power:GND #PWR0137
 U 1 1 5F206EDA
-P 6350 7250
-F 0 "#PWR0137" H 6350 7000 50  0001 C CNN
-F 1 "GND" V 6355 7122 50  0000 R CNN
-F 2 "" H 6350 7250 50  0001 C CNN
-F 3 "" H 6350 7250 50  0001 C CNN
-	1    6350 7250
+P 6000 7250
+F 0 "#PWR0137" H 6000 7000 50  0001 C CNN
+F 1 "GND" V 6005 7122 50  0000 R CNN
+F 2 "" H 6000 7250 50  0001 C CNN
+F 3 "" H 6000 7250 50  0001 C CNN
+	1    6000 7250
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	6350 7250 6250 7250
+	6000 7250 5900 7250
 $Comp
 L Device:C C103
 U 1 1 5F206EE1
-P 5650 7600
-F 0 "C103" V 5902 7600 50  0000 C CNN
-F 1 "0.1µ" V 5811 7600 50  0000 C CNN
-F 2 "Capacitors_SMD:C_0805_HandSoldering" H 5688 7450 50  0001 C CNN
-F 3 "~" H 5650 7600 50  0001 C CNN
-	1    5650 7600
+P 5300 7600
+F 0 "C103" V 5350 7750 50  0000 C CNN
+F 1 "0.1µ" V 5350 7450 50  0000 C CNN
+F 2 "Capacitors_SMD:C_0805_HandSoldering" H 5338 7450 50  0001 C CNN
+F 3 "~" H 5300 7600 50  0001 C CNN
+	1    5300 7600
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	6250 7250 6250 7600
+	5900 7250 5900 7600
 Wire Wire Line
-	6250 7600 5800 7600
-Connection ~ 6250 7250
+	5900 7600 5450 7600
+Connection ~ 5900 7250
 Wire Wire Line
-	6250 7250 6150 7250
+	5900 7250 5800 7250
 Wire Wire Line
-	5500 7600 5050 7600
+	5150 7600 4700 7600
 Wire Wire Line
-	5050 7600 5050 7250
-Connection ~ 5050 7250
+	4700 7600 4700 7250
+Connection ~ 4700 7250
 Wire Wire Line
-	5050 7250 5150 7250
-Text Label 4850 5800 0    50   ~ 0
+	4700 7250 4800 7250
+Text Label 4500 5800 0    50   ~ 0
 INTVOL_CH0
-Text Label 4850 5900 0    50   ~ 0
+Text Label 4500 5900 0    50   ~ 0
 INTVOL_CH1
-Text Label 4850 6000 0    50   ~ 0
+Text Label 4500 6000 0    50   ~ 0
 INTVOL_CH2
-Text Label 4850 6100 0    50   ~ 0
+Text Label 4500 6100 0    50   ~ 0
 INTVOL_CH3
-Text Label 4850 6450 0    50   ~ 0
+Text Label 4500 6450 0    50   ~ 0
 INTBTN_CH0
-Text Label 4850 6550 0    50   ~ 0
+Text Label 4500 6550 0    50   ~ 0
 INTBTN_CH1
-Text Label 4850 6650 0    50   ~ 0
+Text Label 4500 6650 0    50   ~ 0
 INTBTN_CH2
-Text Label 4850 6750 0    50   ~ 0
+Text Label 4500 6750 0    50   ~ 0
 INTBTN_CH3
 Wire Wire Line
-	4850 5900 5350 5900
+	4500 5900 5000 5900
 Wire Wire Line
-	4850 6000 5350 6000
+	4500 6000 5000 6000
 Wire Wire Line
-	4850 6100 5350 6100
+	4500 6100 5000 6100
 Wire Wire Line
-	4850 6450 5350 6450
+	4500 6450 5000 6450
 Wire Wire Line
-	4850 6550 5350 6550
+	4500 6550 5000 6550
 Wire Wire Line
-	4850 6650 5350 6650
+	4500 6650 5000 6650
 Wire Wire Line
-	4850 6750 5350 6750
+	4500 6750 5000 6750
 Wire Wire Line
-	4850 5800 5350 5800
-Text Label 6250 5950 2    50   ~ 0
+	4500 5800 5000 5800
+Text Label 5900 5950 2    50   ~ 0
 INTVOL
 Wire Wire Line
-	6250 5950 5950 5950
-Text Label 6250 6600 2    50   ~ 0
-INTBTN
-Wire Wire Line
-	6250 6600 5950 6600
+	5900 5950 5600 5950
+Text Label 6050 6600 2    50   ~ 0
+INT_CH_BTN
 Wire Notes Line
 	850  5750 850  7750
 Wire Notes Line
@@ -857,15 +855,15 @@ Wire Notes Line
 Text Notes 850  5750 0    50   ~ 0
 Per-Channel Interrupt Logic
 Wire Notes Line
-	4750 5450 4750 7750
+	4300 5450 4300 7750
 Wire Notes Line
-	4750 7750 6750 7750
+	4300 7750 6400 7750
 Wire Notes Line
-	6750 7750 6750 5450
+	6400 7750 6400 5450
 Wire Notes Line
-	6750 5450 4750 5450
-Text Notes 4750 5450 0    50   ~ 0
-Volume/Button Interrupt Logic
+	6400 5450 4300 5450
+Text Notes 4300 5450 0    50   ~ 0
+Per-Channel Volume/Button Interrupt Logic
 Wire Wire Line
 	10600 4350 10700 4350
 $Comp
@@ -1446,4 +1444,131 @@ Text Notes 9750 2500 0    50   ~ 0
 Page
 Text Notes 9600 1000 0    50   ~ 0
 Inputs / Outputs
+$Comp
+L pulsemixer_pcb:SN74HC21DR U104
+U 1 1 5F237CE8
+P 7550 5500
+F 0 "U104" H 7850 5400 50  0000 C CNN
+F 1 "SN74HC21DR" H 7850 5300 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 7550 5500 50  0001 C CNN
+F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 7550 5500 50  0001 C CNN
+	1    7550 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L pulsemixer_pcb:SN74HC21DR U104
+U 2 1 5F2391C4
+P 7550 6000
+F 0 "U104" H 7550 6375 50  0000 C CNN
+F 1 "SN74HC21DR" H 7550 6284 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 7550 6000 50  0001 C CNN
+F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 7550 6000 50  0001 C CNN
+	2    7550 6000
+	1    0    0    1   
+$EndComp
+$Comp
+L pulsemixer_pcb:SN74HC21DR U104
+U 3 1 5F23A8D8
+P 9150 6000
+F 0 "U104" H 9150 6367 50  0000 C CNN
+F 1 "SN74HC21DR" H 9150 6276 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-14_3.9x8.7mm_Pitch1.27mm" V 9150 6000 50  0001 C CNN
+F 3 "http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4011bms-12bms-23bms.pdf" V 9150 6000 50  0001 C CNN
+	3    9150 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C108
+U 1 1 5F23CEB2
+P 9150 6350
+F 0 "C108" V 9100 6200 50  0000 C CNN
+F 1 "0.1µ" V 9100 6500 50  0000 C CNN
+F 2 "Capacitors_SMD:C_0805_HandSoldering" H 9188 6200 50  0001 C CNN
+F 3 "~" H 9150 6350 50  0001 C CNN
+	1    9150 6350
+	0    1    1    0   
+$EndComp
+$Comp
+L power:+5V #PWR0146
+U 1 1 5F24AE43
+P 8450 6000
+F 0 "#PWR0146" H 8450 5850 50  0001 C CNN
+F 1 "+5V" V 8465 6128 50  0000 L CNN
+F 2 "" H 8450 6000 50  0001 C CNN
+F 3 "" H 8450 6000 50  0001 C CNN
+	1    8450 6000
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8450 6000 8550 6000
+Wire Wire Line
+	8550 6000 8550 6350
+Wire Wire Line
+	8550 6350 9000 6350
+Connection ~ 8550 6000
+Wire Wire Line
+	8550 6000 8650 6000
+Wire Wire Line
+	9300 6350 9750 6350
+Wire Wire Line
+	9750 6350 9750 6000
+Wire Wire Line
+	9750 6000 9650 6000
+$Comp
+L power:GND #PWR0147
+U 1 1 5F27D5C1
+P 9850 6000
+F 0 "#PWR0147" H 9850 5750 50  0001 C CNN
+F 1 "GND" V 9855 5872 50  0000 R CNN
+F 2 "" H 9850 6000 50  0001 C CNN
+F 3 "" H 9850 6000 50  0001 C CNN
+	1    9850 6000
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	9750 6000 9850 6000
+Connection ~ 9750 6000
+NoConn ~ 7250 6150
+NoConn ~ 7250 6050
+NoConn ~ 7250 5950
+NoConn ~ 7250 5850
+NoConn ~ 7850 6000
+Text Label 6700 5650 0    50   ~ 0
+INT_CH_BTN
+Text Label 8150 5500 2    50   ~ 0
+INTBTN
+Wire Wire Line
+	7850 5500 8150 5500
+Text Label 7050 1950 0    50   ~ 0
+IO_LED
+Text Label 6700 5350 0    50   ~ 0
+STRM_DEV_BTN
+Text Label 6700 5450 0    50   ~ 0
+IO_BTN
+Text Label 6700 5550 0    50   ~ 0
+PAGE_BTN
+Wire Wire Line
+	7250 5650 6700 5650
+Wire Wire Line
+	6700 5550 7250 5550
+Wire Wire Line
+	7250 5450 6700 5450
+Wire Wire Line
+	6700 5350 7250 5350
+Wire Wire Line
+	5600 6600 6050 6600
+Wire Notes Line
+	6600 5200 6600 6500
+Wire Notes Line
+	6600 6500 10200 6500
+Wire Notes Line
+	10200 6500 10200 5550
+Wire Notes Line
+	10200 5550 8250 5550
+Wire Notes Line
+	8250 5550 8250 5200
+Wire Notes Line
+	8250 5200 6600 5200
+Text Notes 6600 5200 0    50   ~ 0
+Master Controls Interrupt Logic
 $EndSCHEMATC

@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,5.1.6*%
-%TF.CreationDate,2020-07-25T00:00:04-05:00*%
+%TF.CreationDate,2020-07-27T09:31:22-05:00*%
 %TF.ProjectId,pulsemixer_pcb,70756c73-656d-4697-9865-725f7063622e,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Bot*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 5.1.6) date 2020-07-25 00:00:04*
+G04 Created by KiCad (PCBNEW 5.1.6) date 2020-07-27 09:31:22*
 %MOMM*%
 %LPD*%
 G01*
@@ -511,5 +511,10 @@ X180528000Y-90520184D03*
 %TO.C,R508*%
 X221864000Y-90520184D03*
 X224764000Y-90520184D03*
+%TD*%
+D15*
+%TO.C,C108*%
+X182183000Y-48531000D03*
+X184683000Y-48531000D03*
 %TD*%
 M02*
