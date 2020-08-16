@@ -56,7 +56,12 @@ class GPIOChip
  public:
   void setPins(gpio_bank reg, gpio_full data, gpio_full pinMask);
   gpio_full readPins();
+  gpio_full readFullRegister(gpio_bank register);
+  void GPIOChip::setRegister(gpio_bank register_, gpio_bank new_state, gpio_bank pin_mask);
+  void GPIOChip::setRegister(gpio_bank register_, gpio_full new_state, gpio_full pin_mask);
   void setupI2C(gpio_bank addr);
+  void enableInterrupts(gpio_full pins, gpio_full defval);
+  void enableInterrupts(gpio_full pins);
  private:
   gpio_bank _addr;
 };
