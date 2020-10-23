@@ -31,7 +31,7 @@ void Channel::setupI2C(gpio_bank new_addr) {
   // Save the I2C address for later operations
   _addr = new_addr;
   _gpio.setupI2C(_addr);
-  _short_name = "Addr: " + String(_addr, HEX);
+  // _short_name = "Addr: " + String(_addr, HEX);
   // Set pins to read/write
   // Input pins
   gpio_full iodir = 0x0000;
@@ -57,10 +57,14 @@ void Channel::setupI2C(gpio_bank new_addr) {
 
   // Prepare the LCD to display channel name, etc.
   _lcd.setupI2C(_addr);
-  _lcd.setLineOne(_short_name);
-  _lcd.setLineTwo("0123456789");
+  showChannelName();
+
 }
 
+void Channel::showChannelName() {
+  _lcd.setLineOne(_short_name);
+}
+  
 
 void Channel::writeGPIO(gpio_full data) {
   writeMCP(_addr, GPIOA, data);
@@ -83,8 +87,15 @@ void Channel::bumpVolume(int vol_change) {
     } else {
       _volume = new_volume;
     }
+    // _lcd.turnOnLED();
+    // Update the LCD
+    _lcd.showVolume(_volume);
     _lcd.turnOnLED();
     // Send new volume to the host
+    Serial.print("!set volume ");
+    Serial.print(_id);
+    Serial.print(" ");
+    Serial.println(_volume);
   }
   _last_volume_change = current_time;
 }
@@ -95,10 +106,8 @@ void Channel::updateOutputs() {
 }
 
 
-
-
-
-void Channel::processInterrupts() {
+bool Channel::processInterrupts() {
+  // Returns true if the volume encoder was moved
   if (_interrupt_flag) {
     _interrupt_flag = false;
     gpio_full int_state = readInterruptState();
@@ -106,6 +115,8 @@ void Channel::processInterrupts() {
     gpio_full int_triggered = readInterruptFlags();
     // Extract the volume rotary encoder A/B bits
       byte new_vols = (int_state & VOLS);
+      if (new_vols != _vol_old_pins)
+        _last_volume_touched = micros();
       byte vol_move = RotaryDecodeTable[_vol_old_pins][new_vols]; // used RotaryDecodeTable to decide movement, if any
       _vol_old_pins = new_vols;
       if (vol_move == B10){ // if result was move right (CW), increment counter
@@ -116,14 +127,15 @@ void Channel::processInterrupts() {
         bumpVolume(-1);
       }
     if (~int_state & MUTE_SW) {
-      Serial.println("Mute switch pressed");
+      // Serial.println("Mute switch pressed");
       toggleMute();
     }
     if (~int_state & VOL_SW) {
-      Serial.println("Volume switch pressed");
-      _lcd.turnOnLED();
+      // Serial.println("Volume switch pressed");
+      // _lcd.turnOnLED();
     }
   }
+  return (micros() - _last_volume_touched < 20000);
 }
 
 
@@ -149,8 +161,22 @@ void Channel::toggleMute() {
   _isMuted = !_isMuted;
   if (_isMuted) {
     _gpio.setPins(GPIOA, 0xFFFF, MUTE_LED);
+    _lcd.setLineTwo("Muted   ");
   } else {
     _gpio.setPins(GPIOA, 0x0000, MUTE_LED);
+    _lcd.setLineTwo("Unmuted ");
   }
+  _lcd.writeLines();
   _lcd.turnOnLED();
+  // Notify the host
+  Serial.print("!mute ");
+  Serial.print(_id);
+  Serial.print(" ");
+  Serial.println(_isMuted);
+}
+
+
+void Channel::setShortName(String new_name) {
+  _short_name = new_name;
+  showChannelName();
 }

@@ -1,4 +1,5 @@
- #include <Wire.h>
+#include <Wire.h>
+#include <Vector.h>
 #include "channel.h"
 
 // Define channels and their i2c addresses
@@ -44,6 +45,8 @@ int channel_pins[] = {PIN_INT_CH0, PIN_INT_CH1, PIN_INT_CH2, PIN_INT_CH3};
 #define OUT 1
 #define STREAM 0
 #define DEVICE 1
+
+// #define DEBUG
 
 // Variables for tracking rotary encoder
 byte volOldPins[] = {0, 0, 0, 0}; // will hold state of pins last time encoder was read
@@ -96,6 +99,76 @@ void updateMasterOutputs() {
 }
 
 
+String readSerialLine() {
+  String newLine = Serial.readStringUntil('\n');
+  return newLine;
+}
+
+
+// This is a reset function to reset the arduino when request by the host
+void(* resetFunc) (void) = 0;  // declare reset fuction at address 0
+
+void restart() {
+  #ifdef DEBUG
+  Serial.println("Resetting device...");
+  #endif
+  // Clear the outputs during the reset
+  channels[0].setShortName("Resettin");
+  channels[1].setShortName("g...");
+  channels[2].setShortName("Please");
+  channels[3].setShortName("wait...");
+  for (int i=0; i<N_CHANNELS; i++) {
+    channels[i].updateOutputs();
+  }
+  resetFunc();
+}
+
+
+void updateChannelsFromHost() {
+  Serial.print("!REFRESH CHANNELS ");
+  Serial.println(N_CHANNELS);
+  String line, command, property, shortname, tuplestr, channel_id;
+  int segment_start, segment_end=0, name_start, name_end;
+  line = readSerialLine();
+  #ifdef DEBUG
+  Serial.print("Channel list from host: ");
+  Serial.println(line);
+  #endif
+  // Iterate through the channel names returned via serial port
+  for (int ch=0; ch < N_CHANNELS; ch++) {
+    segment_start = line.indexOf('"', segment_end + 1) + 1;
+    segment_end = line.indexOf('"', segment_start);
+    tuplestr = line.substring(segment_start, segment_end);
+    #ifdef DEBUG
+    Serial.print("Tuplestr (");
+    Serial.print(segment_start);
+    Serial.print("-");
+    Serial.print(segment_end);
+    Serial.print("): ");
+    Serial.println(tuplestr);
+    #endif
+    // Get the channel number
+    channel_id = tuplestr.substring(1, tuplestr.indexOf(','));
+    name_start = tuplestr.indexOf("'");
+    name_end = tuplestr.indexOf("'", name_start+1);
+    shortname = tuplestr.substring(name_start+1, name_end);
+    // Set the extracted number and name to the channel
+    if (channel_id == "") {
+      channels[ch].setID(-1);
+    } else {
+      channels[ch].setID(channel_id.toInt());
+    }
+    #ifdef DEBUG
+    Serial.print("Found channel ");
+    Serial.print(channels[ch].getID());
+    Serial.print(": ");
+    Serial.println(shortname);
+    #endif
+    channels[ch].setShortName(shortname);
+  }
+}
+
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -127,7 +200,26 @@ void setup() {
     channels[ch].readInterruptState();
   }
 
+  // Ask the host for channel names, etc
+  updateChannelsFromHost();
   updateMasterOutputs();
+}
+
+
+void check_serial_input() {
+  // Get any pending messages
+  Serial.setTimeout(100);
+  String serial_input = Serial.readStringUntil('\n');
+  if (serial_input.length() > 0) {
+    Serial.print("Received input: ");
+    Serial.println(serial_input);
+  }
+  // Process the received serial input
+  if (serial_input.compareTo(String("?RESET")) == 0) {
+    restart();
+  }
+  // Reset to default serial timeout
+  Serial.setTimeout(1000);
 }
 
 
@@ -148,12 +240,16 @@ void loop() {
   }
   
   // Update each channel
+  bool vol_touched = false;
   for (int i_ch=0; i_ch < N_CHANNELS; i_ch++) {
-    channels[i_ch].processInterrupts();
-    channels[i_ch].updateOutputs();
+    vol_touched |= channels[i_ch].processInterrupts();
+  }
+  if (!vol_touched) {
+    for (int i_ch=0; i_ch < N_CHANNELS; i_ch++) {
+      channels[i_ch].updateOutputs();
+    }
   }
 
-  // Sleep for a second
-  // delay(1);
-  // delay(TICK);
+  // Respond to serial updates from the host
+  check_serial_input();
 }

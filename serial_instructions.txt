@@ -1,0 +1,4 @@
+* Host-To-Client
+* Client-To-Host
+** ``REFRESH CHANNELS``
+   Ask the host to send an updated list of channel names.

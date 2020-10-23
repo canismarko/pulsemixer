@@ -24,14 +24,20 @@ public:
   void setInterruptFlag();
   bool volumeIsDirty();
   void clearVolumeDirty();
-  void processInterrupts();
+  bool processInterrupts();
   void bumpVolume(int vol_change);
   void updateOutputs();
+  void setShortName(String new_name);
+  void setID(int new_id) {_id = new_id;}
+  int getID() {return _id;}
+  void showChannelName();
 // private:
   unsigned long _last_volume_change = 0;
+  unsigned long _last_volume_touched = 0;
   bool _volume_dirty = false;
   int _volume = 0;
   String _short_name;
+  int _id = -1;
   bool _interrupt_flag = false;
   byte _vol_old_pins = B00;
   gpio_bank _addr = 0x03; // Default no-op address "reserved for future purposes" in I2C spec
