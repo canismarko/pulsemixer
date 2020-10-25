@@ -2,6 +2,7 @@
 #include "channel.h"
 #include "GPIO.h"
 
+// #define DEBUG
 
 #define MUTE_LED 0x8000 // B10000000 00000000
 #define VOL_SW   0x4000 // B01000000 00000000
@@ -12,6 +13,8 @@
 
 #define MIN_VOL 0
 #define MAX_VOL 100
+
+volatile boolean isr_is_running = false;
 
 
 const byte RotaryDecodeTable[4][4] = {  // Declare array RotaryDecodeTable
@@ -67,27 +70,59 @@ void Channel::showChannelName() {
   
 
 void Channel::writeGPIO(gpio_full data) {
-  writeMCP(_addr, GPIOA, data);
+  _gpio.writeMCP(_addr, GPIOA, data);
 }
 
 
 void Channel::setInterruptFlag() {
+  // Checker to see if we're already in an ISR
+  if(isr_is_running || _gpio.is_busy()) return; //we have been interrupted while already processing an interrupt - ignore this ocurrence
   _interrupt_flag = true;
+  isr_is_running = true;
+  interrupts(); //re-enable interrupts so that interrupt-based functions can be used inside this function
+  // Check if this is a volume knob event
+  gpio_full int_state = readInterruptState();
+  // Determine which inputs triggered the interrupt
+  // gpio_full int_triggered = readInterruptFlags();
+  // Disable interrupts so we can keep running this function
+  
+  isr_is_running = false;
+  // Extract the volume rotary encoder A/B bits
+  byte new_vols = (int_state & VOLS);
+  byte vol_move = RotaryDecodeTable[_vol_old_pins][new_vols]; // used RotaryDecodeTable to decide movement, if any
+  _vol_old_pins = new_vols;
+  // Set the pending volume to the current volume if it's not dirty
+  if (!_volume_dirty)
+    pending_volume = _volume;
+  if (vol_move == B10){ // if result was move right (CW), increment counter
+    pending_volume += 3;
+    _volume_dirty = true;
+  }
+  if (vol_move == B01){ // if result was move left (anti-CW), decrement counter
+    pending_volume -= 3;
+    _volume_dirty = true;
+  }
+  noInterrupts(); //turn off interrupts so we can't be interrupted while resetting our special variable
+  
 }
 
 
-void Channel::bumpVolume(int vol_change) {
+void Channel::setVolume(int new_volume) {
   unsigned long current_time = micros();
   if (current_time - _last_volume_change > 10000) {
-    int new_volume = _volume + vol_change;
     if (new_volume < MIN_VOL) {
-      _volume = MIN_VOL;
+      new_volume = MIN_VOL;
     } else if (new_volume > MAX_VOL) {
-      _volume = MAX_VOL;
-    } else {
-      _volume = new_volume;
+      new_volume = MAX_VOL;
     }
-    // _lcd.turnOnLED();
+    #ifdef DEBUG
+    Serial.print("Setting new volume ");
+    Serial.print(_id);
+    Serial.print(": ");
+    Serial.println(new_volume);
+    #endif
+    _volume = new_volume;
+    pending_volume = _volume;
     // Update the LCD
     _lcd.showVolume(_volume);
     _lcd.turnOnLED();
@@ -101,12 +136,26 @@ void Channel::bumpVolume(int vol_change) {
 }
 
 
+void Channel::bumpVolume(int vol_change) {
+  setVolume(_volume + vol_change);
+}
+
+
 void Channel::updateOutputs() {
   _lcd.updateDisplay();
 }
 
 
 bool Channel::processInterrupts() {
+  if (_volume_dirty) {
+    _volume_dirty = false;
+    #ifdef DEBUG
+    Serial.print("Volume changed: ");
+    Serial.println(pending_volume);
+    #endif
+    // _volume = bumpVolume(pending_volume);
+    Channel::setVolume(pending_volume);
+  }
   // Returns true if the volume encoder was moved
   if (_interrupt_flag) {
     _interrupt_flag = false;
@@ -114,25 +163,25 @@ bool Channel::processInterrupts() {
     // Determine which inputs triggered the interrupt
     gpio_full int_triggered = readInterruptFlags();
     // Extract the volume rotary encoder A/B bits
-      byte new_vols = (int_state & VOLS);
-      if (new_vols != _vol_old_pins)
-        _last_volume_touched = micros();
-      byte vol_move = RotaryDecodeTable[_vol_old_pins][new_vols]; // used RotaryDecodeTable to decide movement, if any
-      _vol_old_pins = new_vols;
-      if (vol_move == B10){ // if result was move right (CW), increment counter
-        bumpVolume(1);
-      }
- 
-      if (vol_move == B01){ // if result was move left (anti-CW), decrement counter
-        bumpVolume(-1);
-      }
+//    byte new_vols = (int_state & VOLS);
+//    if (new_vols != _vol_old_pins)
+//      _last_volume_touched = micros();
+//    byte vol_move = RotaryDecodeTable[_vol_old_pins][new_vols]; // used RotaryDecodeTable to decide movement, if any
+//    _vol_old_pins = new_vols;
+//    if (vol_move == B10){ // if result was move right (CW), increment counter
+//      bumpVolume(1);
+//    }
+//    if (vol_move == B01){ // if result was move left (anti-CW), decrement counter
+//      bumpVolume(-1);
+//    }
+  
     if (~int_state & MUTE_SW) {
       // Serial.println("Mute switch pressed");
       toggleMute();
     }
     if (~int_state & VOL_SW) {
       // Serial.println("Volume switch pressed");
-      // _lcd.turnOnLED();
+      _lcd.turnOnLED();
     }
   }
   return (micros() - _last_volume_touched < 20000);

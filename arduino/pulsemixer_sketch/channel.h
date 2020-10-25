@@ -26,6 +26,8 @@ public:
   void clearVolumeDirty();
   bool processInterrupts();
   void bumpVolume(int vol_change);
+  void setVolume(int new_volume);
+  int getVolume() {return _volume;}
   void updateOutputs();
   void setShortName(String new_name);
   void setID(int new_id) {_id = new_id;}
@@ -34,8 +36,9 @@ public:
 // private:
   unsigned long _last_volume_change = 0;
   unsigned long _last_volume_touched = 0;
-  bool _volume_dirty = false;
-  int _volume = 0;
+  volatile bool _volume_dirty = false;
+  volatile int pending_volume = -1;
+  volatile int _volume = 0;
   String _short_name;
   int _id = -1;
   bool _interrupt_flag = false;

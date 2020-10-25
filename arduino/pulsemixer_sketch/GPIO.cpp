@@ -4,6 +4,9 @@
 #include <Wire.h>
 
 
+int GPIOChip::busy_count = 0;
+
+
 void GPIOChip::setupI2C(gpio_bank addr)
 {
   _addr = addr;
@@ -164,25 +167,29 @@ gpio_bank splitBankB(gpio_full data) {
 }
 
 
-gpio_bank readMCP(gpio_bank addr, gpio_bank reg) {
+static gpio_bank GPIOChip::readMCP(gpio_bank addr, gpio_bank reg) {
+  raise_busy_count();
   Wire.beginTransmission(addr);
   Wire.write(reg);
   Wire.endTransmission();
   Wire.requestFrom(addr, (gpio_bank) 1);
   gpio_bank response = Wire.read();
+  lower_busy_count();
   return response;
 }
 
 
-void writeMCP(gpio_bank addr, gpio_bank reg, gpio_bank data) {
+static void GPIOChip::writeMCP(gpio_bank addr, gpio_bank reg, gpio_bank data) {
+  raise_busy_count();
   Wire.beginTransmission(addr);
   Wire.write(reg);
   Wire.write(data);
   Wire.endTransmission();
+  lower_busy_count();
 }
 
 
-void writeMCP(gpio_bank addr, gpio_bank reg, gpio_full data) {
+static void GPIOChip::writeMCP(gpio_bank addr, gpio_bank reg, gpio_full data) {
   gpio_bank dataA, dataB;
   dataA = splitBankA(data);
   dataB = splitBankB(data);

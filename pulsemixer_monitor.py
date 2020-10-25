@@ -67,10 +67,11 @@ def get_current_sinks():
     response = subprocess.run(['pactl', 'list', 'sinks'], capture_output=True).stdout.decode()
     sink_ids = re.findall("^Sink #(\d+)$", response, flags=re.MULTILINE)
     mutes = re.findall("^\s+Mute: (yes|no)$", response, flags=re.MULTILINE)
+    volumes = re.findall("^\s+Volume: [-a-z]+: \d+ /\s+(\d+)%", response, flags=re.MULTILINE)
     device_names = re.findall('^\s+Description: (.*)$', response, flags=re.MULTILINE)
     # Compile into a dictionary
     sinks = {}
-    for sink_id, mute, vol, name in zip(sink_ids, mutes, mutes, device_names):
+    for sink_id, mute, vol, name in zip(sink_ids, mutes, volumes, device_names):
         mute = MUTED if mute == 'yes' else UNMUTED
         sinks[int(sink_id)] = {'muted': mute, 'volume': vol, 'short_name': name}
     return sinks
@@ -94,18 +95,21 @@ def set_volume(channel, new_volume):
     pactl(paargs)
 
 
-def set_mute(channel, new_state: bool):
-    # sink_id = get_sink_number(int(channel))
-    log.info("Setting mute on channel %s to %s.", channel, new_state)
+def set_mute(channel: int, new_state: bool):
+    log.info("Setting mute on channel %d to %s.", channel, new_state)
     paargs = ['pactl', 'set-sink-mute', str(channel), "1" if new_state else "0"]
     pactl(paargs)
+
+
+def set_volume(channel: int, new_volume: int):
+    log.info("Setting volume on channel %d to %d.", channel, new_volume)
+    paargs = ['pactl', 'set-sink-volume', str(channel), f"{new_volume}%"]
+    pactl(paargs)    
 
 
 def main():
     # Start logging
     logging.basicConfig(level=logging.WARNING)
-    # Send the current state of the channels to the client
-    # send_channel_names()
     # Enter event loop
     mixer = Mixer()
     mixer.writeline("?RESET")
@@ -139,7 +143,19 @@ def send_channel_names(n_channels):
     # Add extra empty strings for unused channels
     names += ''.join([' ""' for r in range(n_channels - len(sinks.values()))])
     line = f"CHANNELS SHORTNAMES {names}"
-    mixer.writeline(line);
+    mixer.writeline(line)
+
+
+def send_channel_volumes():
+    sinks = get_current_sinks()
+    for id, props in sinks.items():
+        send_channel_volume(id, props['volume'])
+
+
+def send_channel_volume(channel_id, volume):
+    mixer = Mixer()
+    line = f"?set volume {channel_id} {volume}"
+    mixer.writeline(line)
 
 
 def handle_serial_line(line):
@@ -148,10 +164,17 @@ def handle_serial_line(line):
         log.debug("Received request to refresh channel names")
         n_channels = int(line.split(' ')[-1])
         send_channel_names(n_channels)
+    elif line.lower().startswith("!refresh volumes"):
+        log.debug("Received request to refresh volumes")
+        send_channel_volumes()
     elif line.lower().startswith("!mute"):
         log.debug("Received request to mute channel")
         _, channel_id, status = line.split(' ')
         set_mute(channel=int(channel_id), new_state=bool(int(status)))
+    elif line.lower().startswith("!set volume"):
+        log.debug("Received volume change request")
+        _, _, channel_id, new_vol = line.split(' ')
+        set_volume(channel=int(channel_id), new_volume=int(new_vol))
     else:
         log.warning("Unexpected serial line: %s (%d chars)", line, len(line))
 

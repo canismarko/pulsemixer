@@ -32,10 +32,10 @@ typedef uint16_t gpio_full;
 #define GPIOB    0x13
 
 
-void writeMCP(gpio_bank addr, gpio_bank reg, gpio_bank data);
-void writeMCP(gpio_bank addr, gpio_bank reg, gpio_full data);
+//void writeMCP(gpio_bank addr, gpio_bank reg, gpio_bank data);
+//void writeMCP(gpio_bank addr, gpio_bank reg, gpio_full data);
 
-gpio_bank readMCP(gpio_bank addr, gpio_bank reg);
+// gpio_bank readMCP(gpio_bank addr, gpio_bank reg);
 
 gpio_full combineBanks(gpio_bank byteA, gpio_bank byteB);
 gpio_bank splitBankA(gpio_full data);
@@ -57,13 +57,20 @@ class GPIOChip
   void setPins(gpio_bank reg, gpio_full data, gpio_full pinMask);
   gpio_full readPins();
   gpio_full readFullRegister(gpio_bank register);
-  void GPIOChip::setRegister(gpio_bank register_, gpio_bank new_state, gpio_bank pin_mask);
-  void GPIOChip::setRegister(gpio_bank register_, gpio_full new_state, gpio_full pin_mask);
+  void setRegister(gpio_bank register_, gpio_bank new_state, gpio_bank pin_mask);
+  void setRegister(gpio_bank register_, gpio_full new_state, gpio_full pin_mask);
+  static gpio_bank readMCP(gpio_bank addr, gpio_bank reg);
+  static void writeMCP(gpio_bank addr, gpio_bank reg, gpio_bank data);
+  static void writeMCP(gpio_bank addr, gpio_bank reg, gpio_full data);
   void setupI2C(gpio_bank addr);
   void enableInterrupts(gpio_full pins, gpio_full defval);
   void enableInterrupts(gpio_full pins);
+  static bool is_busy() {return (busy_count > 0);}
  private:
+  static int raise_busy_count() {busy_count++;}
+  static int lower_busy_count() {if (busy_count > 0) busy_count--;}
   gpio_bank _addr;
+  static int busy_count;
 };
 
 

@@ -59,6 +59,8 @@ bool io_flag = OUT;
 unsigned int current_page = 0;
 bool stream_dev_flag = DEVICE;
 byte inputALast = 0;
+bool volumes_are_dirty = true;
+bool mutes_are_ditry = true;
 
 // Flags for tracking buttons presses, etc
 bool page_button_pressed = false;
@@ -169,6 +171,16 @@ void updateChannelsFromHost() {
 }
 
 
+void updateVolumesFromHost()
+// Ask the host for new volumes, the responses are handled elsewhere
+{
+  if (volumes_are_dirty) {
+    Serial.println("!REFRESH VOLUMES");
+    volumes_are_dirty = false;
+  }
+}
+
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -200,23 +212,58 @@ void setup() {
     channels[ch].readInterruptState();
   }
 
+  // Display a loading message
+  channels[0].setShortName("Please");
+  channels[1].setShortName("connect");
+  channels[2].setShortName("host");
+
   // Ask the host for channel names, etc
   updateChannelsFromHost();
+  updateVolumesFromHost();
   updateMasterOutputs();
+}
+
+
+void parse_set_volume_request(String line)
+{
+  // Make sure this is an actual set volume request
+  if (line.substring(0, 12).compareTo("?set volume ")) return;
+  // Figure out the channel and new volume
+  String subline = line.substring(12);
+  int split_idx = subline.indexOf(' ');
+  int channel_id = subline.substring(0, split_idx).toInt();
+  int new_volume = subline.substring(split_idx+1).toInt();
+  // Find the channel with this id
+  Channel *channel;
+  for (int i=0; i<N_CHANNELS; i++) {
+    channel = &channels[i];
+    if (channel->getID() == channel_id) {
+      channel->setVolume(new_volume);
+    }
+    
+  }
 }
 
 
 void check_serial_input() {
   // Get any pending messages
   Serial.setTimeout(100);
-  String serial_input = Serial.readStringUntil('\n');
+  String serial_input = readSerialLine();
+  #ifdef DEBUG
   if (serial_input.length() > 0) {
     Serial.print("Received input: ");
     Serial.println(serial_input);
   }
+  #endif
   // Process the received serial input
   if (serial_input.compareTo(String("?RESET")) == 0) {
     restart();
+  }
+  if (serial_input.substring(0, 11).compareTo("?set volume") == 0) {
+    #ifdef DEBUG
+    Serial.println("Received set volume request");
+    #endif
+    parse_set_volume_request(serial_input);
   }
   // Reset to default serial timeout
   Serial.setTimeout(1000);
@@ -249,6 +296,9 @@ void loop() {
       channels[i_ch].updateOutputs();
     }
   }
+
+  // Get updated values from the host if necessary
+  updateVolumesFromHost();
 
   // Respond to serial updates from the host
   check_serial_input();
