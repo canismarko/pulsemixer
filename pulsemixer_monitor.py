@@ -29,12 +29,15 @@ class Mixer():
         self.__dict__ = self.__shared_state
         # Establish a connection if one is required
         if self._serial is None:
-            self._serial = serial.Serial(f'/dev/serial/by-id/{ARDUINO_ID}', 9600)
+            self._serial = serial.Serial(f'/dev/serial/by-id/{ARDUINO_ID}', 115200)
 
     def writeline(self, newline):
-        log.debug("Sending line to device: %s", newline)
-        newline = f"{newline}\n"
-        self._serial.write(newline.encode())
+        if newline != "?set mute 0 0" or True:
+            log.debug("Sending line to device: %s", newline)
+            newline = f"{newline}\n"
+            self._serial.write(newline.encode())
+        else:
+            log.debug("Ignoring line to device: %s", newline)
 
     def readline(self):
         return self._serial.readline().decode('ascii').strip()
@@ -75,15 +78,6 @@ def get_current_sinks():
         mute = MUTED if mute == 'yes' else UNMUTED
         sinks[int(sink_id)] = {'muted': mute, 'volume': vol, 'short_name': name}
     return sinks
-
-
-def send_mute_status(ser, channels=[0, 1, 2]):
-    sinks = get_current_sinks()
-    for ch in channels:
-        sink_id = get_sink_number(ch)
-        msg = f"MUTE CH{ch} {sinks[str(sink_id)]['muted']}\n".encode()
-        log.debug("To serial: %s", msg)
-        ser.writeline(msg)
 
 
 def set_volume(channel, new_volume):
@@ -152,10 +146,24 @@ def send_channel_volumes():
         send_channel_volume(id, props['volume'])
 
 
+def send_channel_mutes():
+    sinks = get_current_sinks()
+    for id, props in sinks.items():
+        send_channel_mute(id, props['muted'])
+
+
 def send_channel_volume(channel_id, volume):
     mixer = Mixer()
     line = f"?set volume {channel_id} {volume}"
     mixer.writeline(line)
+    time.sleep(0.1)
+
+
+def send_channel_mute(channel_id, mute_state):
+    mixer = Mixer()
+    line = f"?set mute {channel_id} {mute_state}"
+    mixer.writeline(line)
+    time.sleep(0.1)
 
 
 def handle_serial_line(line):
@@ -167,6 +175,9 @@ def handle_serial_line(line):
     elif line.lower().startswith("!refresh volumes"):
         log.debug("Received request to refresh volumes")
         send_channel_volumes()
+    elif line.lower().startswith("!refresh mutes"):
+        log.debug("Received request to refresh mute states")
+        send_channel_mutes()        
     elif line.lower().startswith("!mute"):
         log.debug("Received request to mute channel")
         _, channel_id, status = line.split(' ')

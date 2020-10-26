@@ -206,8 +206,8 @@ gpio_full Channel::readInterruptFlags() {
 
 
 
-void Channel::toggleMute() {
-  _isMuted = !_isMuted;
+void Channel::setMute(bool new_mute_state) {
+  _isMuted = new_mute_state;
   if (_isMuted) {
     _gpio.setPins(GPIOA, 0xFFFF, MUTE_LED);
     _lcd.setLineTwo("Muted   ");
@@ -217,6 +217,12 @@ void Channel::toggleMute() {
   }
   _lcd.writeLines();
   _lcd.turnOnLED();
+}
+
+
+void Channel::toggleMute() {
+  bool new_mute_state = !_isMuted;
+  setMute(new_mute_state);
   // Notify the host
   Serial.print("!mute ");
   Serial.print(_id);

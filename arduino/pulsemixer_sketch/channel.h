@@ -26,6 +26,7 @@ public:
   void clearVolumeDirty();
   bool processInterrupts();
   void bumpVolume(int vol_change);
+  void setMute(bool new_mute_state);
   void setVolume(int new_volume);
   int getVolume() {return _volume;}
   void updateOutputs();

@@ -60,7 +60,7 @@ unsigned int current_page = 0;
 bool stream_dev_flag = DEVICE;
 byte inputALast = 0;
 bool volumes_are_dirty = true;
-bool mutes_are_ditry = true;
+bool mutes_are_dirty = true;
 
 // Flags for tracking buttons presses, etc
 bool page_button_pressed = false;
@@ -181,9 +181,19 @@ void updateVolumesFromHost()
 }
 
 
+void updateMutesFromHost()
+// Ask the host for new mute states, the responses are handled elsewhere
+{
+  if (mutes_are_dirty) {
+    Serial.println("!REFRESH MUTES");
+    mutes_are_dirty = false;
+  }
+}
+
+
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Set up the i2c interface
   Wire.begin();
@@ -245,9 +255,30 @@ void parse_set_volume_request(String line)
 }
 
 
+void parse_set_mute_request(String line)
+{
+  // Make sure this is an actual set volume request
+  if (line.substring(0, 10).compareTo("?set mute ")) return;
+  // Figure out the channel and new volume
+  String subline = line.substring(10);
+  int split_idx = subline.indexOf(' ');
+  int channel_id = subline.substring(0, split_idx).toInt();
+  int new_mute_state = subline.substring(split_idx+1).toInt();
+  // Find the channel with this id
+  Channel *channel;
+  for (int i=0; i<N_CHANNELS; i++) {
+    channel = &channels[i];
+    if (channel->getID() == channel_id) {
+      channel->setMute(new_mute_state);
+    }
+    
+  }
+}
+
+
 void check_serial_input() {
   // Get any pending messages
-  Serial.setTimeout(100);
+  Serial.setTimeout(50);
   String serial_input = readSerialLine();
   #ifdef DEBUG
   if (serial_input.length() > 0) {
@@ -259,11 +290,17 @@ void check_serial_input() {
   if (serial_input.compareTo(String("?RESET")) == 0) {
     restart();
   }
-  if (serial_input.substring(0, 11).compareTo("?set volume") == 0) {
+  else if (serial_input.substring(0, 11).compareTo("?set volume") == 0) {
     #ifdef DEBUG
     Serial.println("Received set volume request");
     #endif
     parse_set_volume_request(serial_input);
+  }
+  else if (serial_input.substring(0, 9).compareTo("?set mute") == 0) {
+    #ifdef DEBUG
+    Serial.println("Received set mute request");
+    #endif
+    parse_set_mute_request(serial_input);
   }
   // Reset to default serial timeout
   Serial.setTimeout(1000);
@@ -298,7 +335,8 @@ void loop() {
   }
 
   // Get updated values from the host if necessary
-  updateVolumesFromHost();
+  // updateVolumesFromHost();
+  updateMutesFromHost();
 
   // Respond to serial updates from the host
   check_serial_input();
